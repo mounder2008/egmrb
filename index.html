@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mounder Academy | أكاديمية مُنذر</title>
+    <style>
+        /* إعدادات الجماليات والخلفية */
+        :root {
+            --primary: #00d2ff;
+            --secondary: #9d50bb;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body, html {
+            margin: 0; padding: 0; min-height: 100vh;
+            font-family: 'Cairo', sans-serif;
+            color: white; overflow-x: hidden;
+        }
+
+        /* خلفية سينمائية متحركة (فيديو طبيعة عالي الجودة) */
+        .bg-video {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: url('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            filter: brightness(0.4) contrast(1.2);
+        }
+
+        /* شاشة الترحيب الساحرة */
+        #welcome-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 10000; transition: 1.5s ease;
+        }
+
+        .welcome-card {
+            text-align: center;
+            padding: 60px;
+            border-radius: 40px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 50px rgba(0,210,255,0.3);
+        }
+
+        .welcome-card h1 { font-size: 2.5rem; margin: 15px 0; }
+        .text-ar { color: #fff; }
+        .text-en { color: var(--primary); }
+        .text-fr { color: #ff0080; }
+
+        /* الساعة الحية */
+        #clock {
+            font-size: 2.5rem;
+            margin: 30px 0;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--primary);
+            text-shadow: 0 0 20px var(--primary);
+        }
+
+        /* المحتوى الرئيسي للموقع */
+        .main-content {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .brand-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            margin-bottom: 50px;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 35px;
+            border-radius: 30px;
+            text-align: center;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-15px);
+            background: rgba(255,255,255,0.15);
+            border-color: var(--primary);
+        }
+
+        .card h3 { font-size: 1.8rem; color: var(--primary); }
+
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 35px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover { box-shadow: 0 0 25px var(--primary); }
+
+        /* أزرار خاصة */
+        .btn-insta { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .btn-omegle { background: #ff7e5f; }
+
+        .enter-btn {
+            background: white; color: black;
+            padding: 18px 60px; border: none;
+            border-radius: 50px; font-weight: bold;
+            font-size: 1.2rem; cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .enter-btn:hover { background: var(--primary); color: white; }
+
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Orbitron:wght@600&display=swap" rel="stylesheet">
+</head>
+<body onload="runClock()">
+
+    <div class="bg-video"></div>
+
+    <div id="welcome-screen">
+        <div class="welcome-card">
+            <h1 class="text-ar">أهلاً بك في أكاديمية Mounder 👋</h1>
+            <h1 class="text-en">Welcome to Mounder Academy ✨</h1>
+            <h1 class="text-fr">Bienvenue à l'Académie Mounder 🎓</h1>
+            
+            <div id="clock">00:00:00</div>
+            
+            <button class="enter-btn" onclick="letGo()">استكشف عالم Mounder الآن</button>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <header class="brand-header">
+            <h1>أكاديمية Mounder</h1>
+            <h1>Mounder Academy</h1>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h3>📺 دروس مرئية</h3>
+                <p>تعلم من خلال فيديوهات BBC Learning English الموثوقة.</p>
+                <a href="https://www.youtube.com/@bbclearningenglish" target="_blank" class="btn">شاهد الدروس</a>
+            </div>
+
+            <div class="card">
+                <h3>🎧 بودكاست لغوي</h3>
+                <p>استمع لدروس صوتية يومية من British Council.</p>
+                <a href="https://learnenglish.britishcouncil.org/general-english/podcasts" target="_blank" class="btn">استمع الآن</a>
+            </div>
+
+            <div class="card">
+                <h3>🎮 ألعاب تعليمية</h3>
+                <p>تعلم المفردات بطريقة ممتعة عبر ألعاب تفاعلية.</p>
+                <a href="https://www.gamestolearnenglish.com/" target="_blank" class="btn">العب الآن</a>
+            </div>
+
+            <div class="card">
+                <h3>💬 ممارسة حية</h3>
+                <p>تحدث مع أجانب وجهاً لوجه لممارسة لغتك (Omegle).</p>
+                <a href="https://www.omegle.com" target="_blank" class="btn btn-omegle">دخول أوميجل</a>
+            </div>
+
+            <div class="card">
+                <h3>📸 تابع Mounder</h3>
+                <p>تواصل معي مباشرة عبر حسابي الرسمي على إنستغرام.</p>
+                <a href="https://www.instagram.com/mounder_official/#" target="_blank" class="btn btn-insta">Mounder Instagram</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // وظيفة الساعة الحية
+        function runClock() {
+            setInterval(() => {
+                const now = new Date();
+                document.getElementById('clock').innerText = now.toLocaleTimeString('en-GB');
+            }, 1000);
+        }
+
+        // وظيفة الدخول السلس
+        function letGo() {
+            const screen = document.getElementById('welcome-screen');
+            screen.style.opacity = '0';
+            screen.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                screen.style.display = 'none';
+            }, 1200);
+        }
+    </script>
+</body>
+</html>
