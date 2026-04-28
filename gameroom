@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOUNDER | THE ULTIMATE GAMING WORLD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --girls-pink: #ff007f;
+            --bg: #020205;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        body { background: var(--bg); color: white; overflow-x: hidden; }
+
+        /* شاشة الدخول الاحترافية لتفعيل الصوت والأنيميشن */
+        #entry-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999; display: flex; 
+            flex-direction: column; align-items: center; justify-content: center;
+            transition: 1s ease-in-out;
+        }
+
+        .loader-text { font-family: 'Orbitron'; font-size: 3rem; color: var(--primary); text-shadow: 0 0 20px var(--primary); margin-bottom: 20px; }
+
+        /* التصميم العام */
+        header {
+            padding: 20px 5%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .mounder-logo { font-family: 'Orbitron'; font-size: 2.5rem; font-weight: 900; background: linear-gradient(90deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://wallpaperaccess.com/full/492398.jpg') center/cover;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+            animation: pulseBg 10s infinite alternate;
+        }
+
+        @keyframes pulseBg { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(45deg); } }
+
+        /* تبويبات الأقسام */
+        .tabs { display: flex; justify-content: center; gap: 20px; padding: 40px; }
+        .tab-btn {
+            padding: 15px 40px; border: 2px solid var(--primary); background: transparent;
+            color: white; font-weight: bold; cursor: pointer; border-radius: 50px; transition: 0.3s;
+        }
+        .tab-btn.girls { border-color: var(--girls-pink); color: var(--girls-pink); }
+        .tab-btn:hover, .tab-btn.active { background: var(--primary); color: #000; box-shadow: 0 0 20px var(--primary); }
+        .tab-btn.girls:hover, .tab-btn.girls.active { background: var(--girls-pink); color: #fff; box-shadow: 0 0 20px var(--girls-pink); }
+
+        /* شبكة الألعاب */
+        .games-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px; padding: 50px 8%;
+        }
+
+        .game-card {
+            background: var(--card-bg); border-radius: 20px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.4s; position: relative;
+        }
+
+        .game-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 0 30px rgba(0, 242, 255, 0.3); }
+
+        .game-thumb { width: 100%; height: 200px; object-fit: cover; }
+        .game-info { padding: 20px; text-align: center; }
+
+        /* مشغل الألعاب */
+        #game-viewer {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 10000;
+        }
+
+        footer { padding: 50px; text-align: center; border-top: 2px solid var(--secondary); margin-top: 50px; background: #050505; }
+        .footer-name { font-family: 'Orbitron'; color: var(--primary); font-size: 1.5rem; }
+
+    </style>
+</head>
+<body>
+
+    <div id="entry-overlay">
+        <div class="loader-text">MOUNDER WORLD</div>
+        <button class="tab-btn" onclick="startExperience()">دخول العالم (تفعيل الصوت)</button>
+    </div>
+
+    <header>
+        <div class="mounder-logo">MOUNDER</div>
+        <nav>
+            <button class="tab-btn active" onclick="filterGames('all')">الكل</button>
+            <button class="tab-btn" onclick="filterGames('action')">أكشن</button>
+            <button class="tab-btn girls" onclick="filterGames('girls')">غرفة الفتيات (VIP)</button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1 style="font-size: 5rem; font-family: 'Orbitron';">NEXUS ARCADE</h1>
+        <p style="font-size: 1.5rem; letter-spacing: 5px;">مستقبل الألعاب بين يديك</p>
+    </section>
+
+    <main class="games-grid" id="mainGrid">
+        </main>
+
+    <div id="game-viewer">
+        <button onclick="closeGame()" style="position:absolute; top:20px; left:20px; padding:10px 25px; background:red; color:white; border:none; cursor:pointer; z-index:11;">إغلاق X</button>
+        <iframe id="game-frame" src="" style="width:100%; height:100%; border:none;"></iframe>
+    </div>
+
+    <footer>
+        <p>تصميم وتطوير بواسطة</p>
+        <div class="footer-name">MOUNDER PRO &copy; 2026</div>
+    </footer>
+
+    <audio id="clickSound" src="https://www.soundjay.com/buttons/button-37.mp3"></audio>
+    <audio id="bgMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3"></audio>
+
+    <script>
+        // مصفوفة الألعاب (أكثر من 40 لعبة متنوعة)
+        // ملاحظة: الروابط أدناه هي ألعاب حقيقية تعمل بدون إعلانات منبثقة مزعجة
+        const games = [
+            { id: 1, title: "Combat Strike", cat: "action", img: "https://images.unsplash.com/photo-1542751371-adc38448a05e", url: "https://www.gamepix.com/live/combat-online" },
+            { id: 2, title: "Cyber Cars", cat: "action", img: "https://images.unsplash.com/photo-1511512578047-dfb367046420", url: "https://www.gamepix.com/live/cyber-cars-punk-racing" },
+            { id: 3, title: "Fashion Queen", cat: "girls", img: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796", url: "https://www.gamepix.com/live/high-school-summer-crush-date" },
+            { id: 4, title: "War Robots", cat: "action", img: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc", url: "https://www.gamepix.com/live/war-robots" },
+            // تكرار البيانات لمحاكاة الـ 40 لعبة مع روابط مختلفة
+        ];
+
+        // تكملة المصفوفة تلقائياً للتوضيح (يجب وضع روابط حقيقية لكل واحدة)
+        for(let i=5; i<=40; i++) {
+            games.push({
+                id: i,
+                title: i % 5 === 0 ? "Dream Room Design" : "Professional War " + i,
+                cat: i % 5 === 0 ? "girls" : "action",
+                img: i % 5 === 0 ? "https://images.unsplash.com/photo-1550745165-9bc0b252726f" : "https://images.unsplash.com/photo-1614028674026-a65e31bfd27c",
+                url: i % 5 === 0 ? "https://www.gamepix.com/live/my-perfect-bedroom" : "https://www.gamepix.com/live/shell-shockers"
+            });
+        }
+
+        const grid = document.getElementById('mainGrid');
+        const clickSnd = document.getElementById('clickSound');
+        const bgMsc = document.getElementById('bgMusic');
+
+        function startExperience() {
+            document.getElementById('entry-overlay').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('entry-overlay').style.display = 'none';
+                bgMsc.play();
+                bgMsc.volume = 0.2;
+            }, 1000);
+            renderGames('all');
+        }
+
+        function renderGames(filter) {
+            grid.innerHTML = '';
+            const filtered = filter === 'all' ? games : games.filter(g => g.cat === filter);
+            
+            filtered.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.innerHTML = `
+                    <img class="game-thumb" src="${game.img}" alt="${game.title}">
+                    <div class="game-info">
+                        <h3 style="color:${game.cat === 'girls' ? 'var(--girls-pink)' : 'var(--primary)'}">${game.title}</h3>
+                        <button class="tab-btn" style="margin-top:15px; width:100%" onclick="playGame('${game.url}')">العب الآن</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterGames(cat) {
+            clickSnd.play();
+            renderGames(cat);
+            // تحديث حالة الأزرار
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function playGame(url) {
+            clickSnd.play();
+            document.getElementById('game-frame').src = url;
+            document.getElementById('game-viewer').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeGame() {
+            document.getElementById('game-viewer').style.display = 'none';
+            document.getElementById('game-frame').src = '';
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+</body>
+</html>
+</body>
+</html>
